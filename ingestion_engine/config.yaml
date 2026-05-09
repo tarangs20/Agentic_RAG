@@ -3,15 +3,43 @@ project:
   logs_dir: "logs"
   output_base_dir: "data/raw"
   global_policy: "skip"
+  
+  # Concurrency & timeout
   concurrency_limit: 5
+  max_session_permit: 3
+  page_timeout_ms: 30000
+
+  # Content extraction
+  word_count_threshold: 0 # crawl4ai internal filter; 0 = keep all pages incl. short ones
+  thin_page_threshold: 20 # log [THIN] warning if saved page has fewer than N words
+  default_css_selector: "body"
+
+  # Markdown generation
+  markdown:
+    ignore_links: false
+    ignore_images: true
+    body_width: 0
+    skip_internal_links: true
+
 
 sites:
   - name: "apache_kafka_v42"
-    base_url: "https://kafka.apache.org/42"
-    #"https://kafka.apache.org/42/"  # The new entry point
+    base_url: "https://kafka.apache.org/42/"
     allowed_domains: ["kafka.apache.org"]
     path_filter: "/42/"
     max_depth: 5
     max_pages: 200
     policy: "skip"
     requires_redaction: false
+    domain: "kafka"             # ChromaDB metadata filter key
+    source_type: "web"          # ChromaDB metadata — distinguishes web vs pdf vs ticket
+    # css_selector: Kafka docs are server-side rendered static HTML.
+    # "body" captures the full page; crawl4ai's markdown generator then strips
+    # nav/footer noise. If content is still thin, inspect the live DOM (F12)
+    # and set a tighter selector like "div.page-content" here.
+    #css_selector: "div.content, main, article, .breadcrumb, h1, h2, h3, h4"
+    css_selector: "nav.td-breadcrumbs, div.td-content"
+ 
+    # wait_for: uncomment if pages are JS-rendered and content loads after page paint.
+    # Uses crawl4ai's CSS-wait syntax — waits until the selector appears in DOM.
+    # wait_for: "css:div.page-content"
