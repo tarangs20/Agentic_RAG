@@ -1,0 +1,4 @@
+# --- Ingestion & Crawling ---
+crawl4ai
+playwright    # Explicitly mentioned for clarity
+docling

@@ -1,0 +1,15 @@
+project:
+  engine_name: "ingestion_engine"
+  logs_dir: "logs"
+  output_base_dir: "data/raw"
+  global_policy: "skip"
+  concurrency_limit: 5
+
+sites:
+  - name: "apache_kafka"
+    base_url: "https://kafka.apache.org/documentation/"
+    allowed_domains: ["kafka.apache.org"]
+    max_depth: 1
+    max_pages: 100
+    policy: "skip"
+    requires_redaction: false
