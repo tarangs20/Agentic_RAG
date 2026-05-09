@@ -1,2 +1,4 @@
 .env
 .venv
+ingestion_engine/logs
+ingestion_engine/data

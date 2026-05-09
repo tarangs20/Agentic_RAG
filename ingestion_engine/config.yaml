@@ -6,10 +6,12 @@ project:
   concurrency_limit: 5
 
 sites:
-  - name: "apache_kafka"
-    base_url: "https://kafka.apache.org/documentation/"
+  - name: "apache_kafka_v42"
+    base_url: "https://kafka.apache.org/42"
+    #"https://kafka.apache.org/42/"  # The new entry point
     allowed_domains: ["kafka.apache.org"]
-    max_depth: 1
-    max_pages: 100
+    path_filter: "/42/"
+    max_depth: 5
+    max_pages: 200
     policy: "skip"
     requires_redaction: false
